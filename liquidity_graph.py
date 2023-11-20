@@ -4,6 +4,8 @@ import matplotlib.dates as mdates
 
 # CSV 파일 읽기
 df = pd.read_csv('uniswap_data.csv', parse_dates=['timestamp'])
+df_price = pd.read_csv('ethereum_price.csv', parse_dates=['timestamp'])
+df_trades = pd.read_csv('bov_trading_volume.csv', parse_dates=['time'])
 
 # 'liquidity_delta'를 실수로 변환
 df['liquidity_delta'] = pd.to_numeric(df['liquidity_delta'], errors='coerce')
@@ -39,9 +41,24 @@ ax1.legend(loc='upper left')
 ax2 = ax1.twinx()  # 같은 x축을 공유하는 두 번째 y축 생성
 color = 'tab:blue'
 ax2.set_ylabel('Pool Balance', color=color)
-ax2.plot(resampled_balance.index, resampled_balance['pool_balance'], label='Pool Balance', color=color, linewidth=0.5)
+ax2.plot(resampled_balance.index, resampled_balance['pool_balance'], label='Pool Balance', color=color, linewidth=0.7)
 ax2.tick_params(axis='y', labelcolor=color)
 ax2.legend(loc='upper right')
+
+ax3 = ax1.twinx()  # 이더리움 가격을 위한 새로운 y축 생성
+ax3.spines['right'].set_position(('outward', 60))  # y축을 오른쪽으로 조금 더 이동
+ax3.set_ylabel('ETH Price', color='purple')
+ax3.plot(df_price['timestamp'], df_price['average_price'], label='ETH Price', color='purple', linewidth=0.5)
+ax3.tick_params(axis='y', labelcolor='purple')
+
+ax4 = ax1.twinx()  # 거래량을 위한 새로운 y축 생성
+ax4.spines['right'].set_position(('outward', 120))  # y축을 더 오른쪽으로 이동
+ax4.set_ylabel('Trade Volume (USD)', color='green')
+ax4.bar(df_trades['time'], df_trades['trade_volume_usd'], width=0.7, label='Trade Volume', color='gray', alpha=0.6)
+ax4.tick_params(axis='y', labelcolor='green')
+
+
+ax1.grid(True, which='both', axis='both', linestyle='--', linewidth=0.5)
 
 plt.title('Liquidity Additions, Removals, and Pool Balance Over Time')
 plt.show()
