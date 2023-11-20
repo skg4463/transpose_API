@@ -59,7 +59,6 @@ def save_to_csv(data, filename):
             logging.error(f"Unexpected error occurred while saving to {filename}: {e}")
 
 
-
 # 시작 날짜와 종료 날짜 설정
 start_date = datetime(2023, 1, 1)
 end_date = start_date + timedelta(hours=24)  # 24시간 간격
