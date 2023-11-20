@@ -11,7 +11,6 @@ api key = M3POVCPgTamflczQHxcqlhBlX6ciBBvg
 
 """
 
-
 # 로깅 설정: 터미널에 로그 출력
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -25,7 +24,6 @@ def fetch_data(start_date, end_date):
     try:
         response = requests.get(
             f'https://api.transpose.io/endpoint/dex_liquidity_by_account?end_date={end_date}&start_date={start_date}',
-
             headers=headers,
             json={'options': {}},
         )
@@ -60,17 +58,17 @@ def save_to_csv(data, filename):
 
 
 # 시작 날짜와 종료 날짜 설정
-start_date = datetime(2023, 1, 1)
-end_date = start_date + timedelta(hours=24)  # 24시간 간격
+start_date = datetime(2022, 1, 1)
+end_date = start_date + timedelta(hours=48)  # 시간 간격
 
 # 파일 이름 설정
 filename = 'uniswap_data.csv'
 
 # 48시간 간격으로 데이터 요청 및 저장
-while end_date <= datetime(2023, 1, 2):  # 예시로 2023년 말까지 설정
+while end_date <= datetime(2022, 12, 31):
     data = fetch_data(start_date.strftime("%Y-%m-%dT%H:%M:%SZ"), end_date.strftime("%Y-%m-%dT%H:%M:%SZ"))
     if data:
-        print(data)
+        # print(data)
         save_to_csv(data, filename)
 
     # 다음 48시간 간격으로 날짜 업데이트
@@ -79,4 +77,4 @@ while end_date <= datetime(2023, 1, 2):  # 예시로 2023년 말까지 설정
 
     # API 요청 제한을 고려하여 대기
     time.sleep(1)  # 초당 1회 요청 제한에 맞춰 대기
-    logging.info("Waiting for next request cycle")
+    logging.info("Waiting for next request cycle 1s")
