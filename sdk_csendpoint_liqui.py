@@ -71,7 +71,7 @@ while end_date <= datetime(2022, 12, 31):
         # print(data)
         save_to_csv(data, filename)
 
-    # 다음 48시간 간격으로 날짜 업데이트
+    # 다음 48시간 간격으로 날짜 업데이트.
     start_date += timedelta(hours=48)
     end_date += timedelta(hours=48)
 
